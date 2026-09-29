@@ -1,0 +1,18 @@
+server:
+  port: ${SERVER_PORT:18090}
+
+spring:
+  application:
+    name: spring-k8s-delivery
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+  endpoint:
+    health:
+      show-details: always
+app:
+  version: ${APP_VERSION:dev}
