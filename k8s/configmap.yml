@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-k8s-delivery-config
+
+data:
+  APP_VERSION: "0.1.0"
+  APP_ENVIRONMENT: "kubernetes"
