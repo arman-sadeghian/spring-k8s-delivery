@@ -9,9 +9,13 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-test:
-    name: Build, Test and Dockerize
+    name: Build, Test and Publish
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +35,23 @@ jobs:
       - name: Package application
         run: mvn --batch-mode package -DskipTests
 
+      - name: Log in to GitHub Container Registry
+        if: github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build Docker image
         run: |
           docker build \
-            -t spring-k8s-delivery:${{ github.sha }} \
+            -t ghcr.io/arman-sadeghian/spring-k8s-delivery:${{ github.sha }} \
+            -t ghcr.io/arman-sadeghian/spring-k8s-delivery:latest \
             .
+
+      - name: Push Docker image
+        if: github.event_name == 'push'
+        run: |
+          docker push ghcr.io/arman-sadeghian/spring-k8s-delivery:${{ github.sha }}
+          docker push ghcr.io/arman-sadeghian/spring-k8s-delivery:latest
