@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: spring-k8s-delivery
-          image: spring-k8s-delivery:0.1.0
+          image: spring-k8s-delivery:0.2.0
           imagePullPolicy: IfNotPresent
 
           ports:
